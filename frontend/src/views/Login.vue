@@ -23,19 +23,31 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue'
-  import Header from '../components/Header.vue'
-  import Footer from '../components/Footer.vue'
-  
-  // Réactifs pour login
-  const email = ref('')
-  const password = ref('')
-  
-  const handleLogin = () => {
-    console.log('Tentative de connexion avec :', email.value, password.value)
-    // Plus tard ici ➔ tu enverras une requête au backend pour authentifier
+import { ref } from 'vue'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const email    = ref('')
+const password = ref('')
+
+async function handleLogin() {
+  try {
+    const res = await axios.post('http://localhost:5000/api/login', {
+      email:    email.value,
+      password: password.value
+    })
+    // on stocke le token pour les requêtes futures
+    localStorage.setItem('token', res.data.token)
+    router.push('/profil')
+  } catch {
+    alert('Identifiants incorrects')
   }
-  </script>
+}
+</script>
+
   
   <style scoped>
   .login-form {

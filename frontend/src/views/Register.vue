@@ -1,100 +1,177 @@
 <template>
-    <div class="register-page">
-      <Header />
-      <main class="register-form fade-in">
-        <h1>Créer votre compte</h1>
-  
-        <form @submit.prevent="handleSubmit">
-          <!-- Partie Compte -->
-          <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" id="nom" v-model="form.nom" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" v-model="form.prenom" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="email">Adresse e-mail</label>
-            <input type="email" id="email" v-model="form.email" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" v-model="form.password" required />
-          </div>
-  
-          <!-- Partie Préférences -->
-          <div class="form-group">
-            <label for="annee">Année de publication</label>
-            <input type="number" id="annee" v-model="form.annee" min="1900" max="2099" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="joueurs">Nombre minimum de joueurs</label>
-            <input type="number" id="joueurs" v-model="form.joueurs" min="1" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="duree">Durée de jeu</label>
-            <select id="duree" v-model="form.duree" required>
-              <option value="">Sélectionner...</option>
-              <option value="15-30 min">15 – 30 min</option>
-              <option value="30-60 min">30 – 60 min</option>
-              <option value="60-120 min">60 – 120 min</option>
-              <option value="120+ min">Plus de 2h</option>
-            </select>
-          </div>
-  
-          <div class="form-group">
-            <label for="age">Âge minimum</label>
-            <input type="number" id="age" v-model="form.age" min="3" required />
-          </div>
-  
-          <div class="form-group">
-            <label for="categorie">Catégorie</label>
-            <select id="categorie" v-model="form.categorie" required>
-              <option value="">Sélectionner...</option>
-              <option value="Stratégie">Stratégie</option>
-              <option value="Famille">Famille</option>
-              <option value="Cartes">Cartes</option>
-              <option value="Coopératif">Coopératif</option>
-              <option value="Ambiance">Ambiance</option>
-            </select>
-          </div>
-  
-          <button type="submit" class="cta-button">Créer mon compte</button>
-        </form>
-      </main>
-      <Footer />
-    </div>
-  </template>
-  
-  <script setup>
-  import { reactive } from 'vue'
-  import Header from '../components/Header.vue'
-  import Footer from '../components/Footer.vue'
-  
-  // Création du modèle du formulaire
-  const form = reactive({
-    nom: '',
-    prenom: '',
-    email: '',
-    password: '',
-    annee: '',
-    joueurs: '',
-    duree: '',
-    age: '',
-    categorie: ''
-  })
-  
-  const handleSubmit = () => {
-    console.log('Formulaire soumis :', form)
-    // Ici tu pourras ajouter la logique pour envoyer les données vers ton backend plus tard
+  <div class="register-page">
+    <Header />
+    <main class="register-form fade-in">
+      <h1>Créer votre compte</h1>
+
+      <form @submit.prevent="handleSubmit">
+        <!-- Partie Compte -->
+        <div class="form-group">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" v-model="form.nom" required />
+        </div>
+
+        <div class="form-group">
+          <label for="prenom">Prénom</label>
+          <input type="text" id="prenom" v-model="form.prenom" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Adresse e-mail</label>
+          <input type="email" id="email" v-model="form.email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" v-model="form.password" required />
+        </div>
+
+        <!-- Partie Préférences (ProfilLudique) -->
+        <div class="form-group">
+          <label for="annee">Année de publication souhaitée</label>
+          <input
+            type="number"
+            id="annee"
+            v-model.number="form.year_published"
+            min="1900"
+            max="2099"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="min-joueurs">Nombre minimum de joueurs</label>
+          <input
+            type="number"
+            id="min-joueurs"
+            v-model.number="form.min_players"
+            min="1"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="max-joueurs">Nombre maximum de joueurs</label>
+          <input
+            type="number"
+            id="max-joueurs"
+            v-model.number="form.max_players"
+            :min="form.min_players"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="min-duree">Durée minimum de jeu (min)</label>
+          <input
+            type="number"
+            id="min-duree"
+            v-model.number="form.min_playtime"
+            min="0"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="max-duree">Durée maximum de jeu (min)</label>
+          <input
+            type="number"
+            id="max-duree"
+            v-model.number="form.max_playtime"
+            :min="form.min_playtime"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="age">Âge minimum</label>
+          <input
+            type="number"
+            id="age"
+            v-model.number="form.min_age"
+            min="3"
+            required
+          />
+        </div>
+        <div class="form-group">
+    <label for="categorie">Catégorie</label>
+    <select id="categorie" v-model="form.category" required>
+      <option value="">Sélectionner...</option>
+      <option
+        v-for="cat in categories"
+        :key="cat"
+        :value="cat"
+      >{{ cat }}</option>
+    </select>
+  </div>
+
+        <button type="submit" class="cta-button">Créer mon compte</button>
+      </form>
+    </main>
+    <Footer />
+  </div>
+</template>
+
+<script setup>
+import { reactive, ref, onMounted } from 'vue'
+import axios from 'axios'
+import { useRouter } from 'vue-router'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+
+const router = useRouter()
+
+// Modèle du formulaire exactement aligné sur ta BDD
+const form = reactive({
+  // Utilisateur
+  nom: '',
+  prenom: '',
+  email: '',
+  password: '',
+  // ProfilLudique
+  year_published: null,
+  min_players: null,
+  max_players: null,
+  min_playtime: null,
+  max_playtime: null,
+  min_age: null,
+  category: ''
+})
+
+// liste des catégories chargée depuis l'API
+const categories = ref([])
+
+// au montage, on récupère les catégories en base
+onMounted(async () => {
+  try {
+    const res = await axios.get('http://localhost:5000/api/categories')
+    categories.value = res.data  // ex. ["Famille","Stratégie","Cartes",...]
+  } catch (err) {
+    console.error('Impossible de charger les catégories :', err)
   }
-  </script>
+})
+
+async function handleSubmit() {
+  try {
+    await axios.post('http://localhost:5000/api/register', {
+      nom: form.nom,
+      prenom: form.prenom,
+      email: form.email,
+      password: form.password,
+      // Profil ludique
+      year_published: form.year_published,
+      min_players:  form.min_players,
+      max_players:  form.max_players,
+      min_playtime: form.min_playtime,
+      max_playtime: form.max_playtime,
+      min_age:      form.min_age,
+      category:     form.category
+    })
+    router.push('/login')
+  } catch (err) {
+    alert(err.response?.data?.error || 'Erreur lors de l’inscription')
+    console.error(err)
+  }
+}
+</script>
   
   <style scoped>
 .register-form {
